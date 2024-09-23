@@ -1,10 +1,21 @@
-  
+  const blog = require("../models/blogModel")
+  const statusCodes = require("http-status-codes")
+
+
   const getAllBlogs = async(req,res)=> {
-    res.send("display Blogs")
+    const blogContent = await blog.find()
+    res.status(statusCodes.OK).json({blogContent})
   }
 
   const getOneBlog = async(req,res)=> {
-    res.send("get one blog")
+   
+   
+   const blogContent = await blog.findOne({_id : req.params.id})
+   res.status(statusCodes.OK).json({blogContent})
+
+   if(blogContent) {
+    res.status(statusCodes.OK).json({msg:"no content found"})
+   }
   }
 
   const likeABlog = async(req,res) => {
