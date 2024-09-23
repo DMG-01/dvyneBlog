@@ -9,7 +9,9 @@ const postABlog = async(req,res)=> {
 }
 
 const updateABlog = async(req,res)=> {
-    res.send("a blog has been updated")
+   // res.send("a blog has been updated")
+   const blogContent = await blog.findOneAndUpdate({_id:req.params.id},req.body,{new:true,runValidators:true})
+   res.status(statusCodes.OK).json({blogContent})
 }
 
 const deleteABlog = async(req,res) => {
