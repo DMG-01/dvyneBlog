@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const blogSchema = new mongoose.Schema({
-    Title : {
+    title : {
         type:String,
         required:[true,"blog must have a title"],
         minlength:[2,"blog title must have more than one character"],
@@ -16,8 +16,9 @@ const blogSchema = new mongoose.Schema({
         required:true,
     },
     comments: {
-        type:Array,
-        required:true
+        type:[mongoose.Types.ObjectId],
+        ref:"comment",
+        default:[]
     }
 
 },{timestamps:true})
