@@ -2,7 +2,8 @@ const mongoose = require("mongoose")
 
 const commentSchema = new mongoose.Schema({
     User: {
-        type:String,
+        type:mongoose.Types.ObjectId,
+        ref:"users",
         minlength:2,
         required:[true,"User must have a name"]
     },
