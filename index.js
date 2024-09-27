@@ -5,6 +5,7 @@ const app = express()
 
 const blogsRoute = require("./routes/blog")
 const adminRoute = require("./routes/adminRoute")
+const authRoute = require("./routes/auth")
 
 
 app.use(express.json())
@@ -15,6 +16,7 @@ app.get("/",(req,res)=> {
 
 app.use("/api/v1/blog",blogsRoute)
 app.use("/api/v1/admin",adminRoute)
+app.use("/api/v1/auth",authRoute)
 
 const start = async (req,res)=> {
     try {
@@ -23,7 +25,7 @@ const start = async (req,res)=> {
         console.log(`app is listening on port 3000`)
     })}
     catch(error) {
-        res.send(error)
+      console.log(error)
     }
 }
 
