@@ -20,6 +20,7 @@
 
   const likeABlog = async(req,res) => {
     res.send("a blog has been liked")
+    console.log(req.headers)
   }
 
   const unlikeABlog = async(req,res)=> {
