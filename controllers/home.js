@@ -19,10 +19,21 @@
   }
 
   const likeABlog = async(req,res) => {
-    res.send("a blog has been liked")
-    console.log(req.headers)
-  }
+    //res.send("a blog has been liked")
+    //console.log(req.headers)
+    const { params:{id:blogId} } = req
 
+    const blogContent = await blog.findOne( {_id:blogId})
+
+    if (!blogContent) {
+      return res.status(statusCodes.NOT_FOUND).json({ msg: "No content found" });
+  }
+  
+    blogContent.likes++
+    await blogContent.save()
+    res.status(statusCodes.OK).json({blog})
+  }
+ 
   const unlikeABlog = async(req,res)=> {
     res.send("a blog has been unliked")
   }
