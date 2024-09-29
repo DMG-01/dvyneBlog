@@ -15,7 +15,8 @@ const updateABlog = async(req,res)=> {
 }
 
 const deleteABlog = async(req,res) => {
-    res.send("a blog has been deleted")
+    await blog.findOneAndDelete({_id:req.params.id})
+    res.status(statusCodes.OK).json({msg:"blog has been deleted"})
 }
 
 module.exports = {postABlog,updateABlog,deleteABlog}
