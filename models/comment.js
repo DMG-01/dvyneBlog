@@ -5,8 +5,13 @@ const commentSchema = new mongoose.Schema({
         type:mongoose.Types.ObjectId,
         ref:"users",
         minlength:2,
-        required:[true,"User must have a name"]
+        required:[true,"User must have a nameId"]
     },
+    UserName: {
+        type:String,
+        minlength:2,
+        required:true
+        },
     Content: {
        type:String,
        minlength:1,

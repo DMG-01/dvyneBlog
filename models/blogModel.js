@@ -16,11 +16,11 @@ const blogSchema = new mongoose.Schema({
         required:true,
         default:[]
     },
-    comments: {
+    comments:[ {
         type:[mongoose.Types.ObjectId],
         ref:"comment",
         default:[]
-    }
+    }]
 
 },{timestamps:true})
 

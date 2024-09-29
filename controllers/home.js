@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 const blog = require("../models/blogModel");
 const statusCodes = require("http-status-codes");
+const comments = require("../models/comment")
 const { object } = require("joi");
 
 // Get all blogs
 const getAllBlogs = async (req, res) => {
   try {
-    const blogContent = await blog.find();
+    const blogContent = await blog.find().populate("comments");
     res.status(statusCodes.OK).json({ blogContent });
   } catch (error) {
     res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Failed to retrieve blogs", error });
@@ -16,7 +17,8 @@ const getAllBlogs = async (req, res) => {
 // Get one blog by ID
 const getOneBlog = async (req, res) => {
   try {
-    const blogContent = await blog.findOne({ _id: req.params.id });
+    const blogContent = await blog.findOne({ _id: req.params.id }).populate("comments");
+
 
     if (!blogContent) {
       return res.status(statusCodes.NOT_FOUND).json({ msg: "No content found" });
@@ -108,7 +110,36 @@ const unlikeABlog = async (req, res) => {
 
 // Comment on a blog
 const commentOnABlog = async (req, res) => {
+ try {
+  const{
+    user:{userId,name},
+    params:{id:blogId}
+  } = req
+
+  let objectUserId 
+  try {
+    objectUserId = mongoose.Types.ObjectId(userId)
+  
+  }catch(error){
+    res.status(statusCodes.BAD_REQUEST).json({msg:error})
+  }
+req.body.UserName = name
+req.body.User = objectUserId
+  const commentContent = await comments.create(req.body)
+  const blogContent = await blog.findOne({_id:blogId})
+
+  if(!blogContent) {
+   return res.status(statusCodes.BAD_REQUEST).json({msg: `No blog with id ${blogId} found`})
+  }
+
+   blogContent.comments.push(commentContent._id)
+   await blogContent.save()
  
+  res.status(statusCodes.OK).json({commentContent,blogContent})
+
+ }catch(error){
+  res.status(statusCodes.BAD_REQUEST).json({msg:error})
+ }
 }
 
 module.exports = { getAllBlogs, getOneBlog, likeABlog, unlikeABlog, commentOnABlog };
