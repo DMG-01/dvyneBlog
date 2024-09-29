@@ -11,10 +11,10 @@ const blogSchema = new mongoose.Schema({
         required:[true,"blog must have content"],
         minlength:10
     },
-    likes: {
-        type:Number,
+    blogLikes: {
+        type:[mongoose.Types.ObjectId],
         required:true,
-        default:0
+        default:[]
     },
     comments: {
         type:[mongoose.Types.ObjectId],
