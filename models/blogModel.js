@@ -13,6 +13,7 @@ const blogSchema = new mongoose.Schema({
     },
     blogLikes: {
         type:[mongoose.Types.ObjectId],
+        ref:"users",
         required:true,
         default:[]
     },
@@ -25,7 +26,6 @@ const blogSchema = new mongoose.Schema({
         type:Number,
         default:0
     }
-
 },{timestamps:true})
 
 

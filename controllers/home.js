@@ -7,17 +7,26 @@ const { object } = require("joi");
 // Get all blogs
 const getAllBlogs = async (req, res) => {
   try {
-    const blogContent = await blog.find().populate("comments");
-    res.status(statusCodes.OK).json({ blogContent });
+    const blogContent = await blog.find().populate("comments").populate('blogLikes', 'name');
+    const numberOfBlogs = blogContent.length;
+
+    // Map through blogContent to add number of likes
+    const blogsWithLikesCount = blogContent.map(blog => ({
+      ...blog.toObject(), // Convert Mongoose Document to plain object
+      numberOfLikes: blog.blogLikes.length, // Add number of likes
+    }));
+
+    res.status(statusCodes.OK).json({ blogs: blogsWithLikesCount, numberOfBlogs });
   } catch (error) {
     res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Failed to retrieve blogs", error });
   }
 };
 
+
 // Get one blog by ID
 const getOneBlog = async (req, res) => {
   try {
-    const blogContent = await blog.findOne({ _id: req.params.id }).populate("comments");
+    const blogContent = await blog.findOne({ _id: req.params.id }).populate("comments").populate("blogLikes","name");
 
 
     if (!blogContent) {
@@ -25,7 +34,9 @@ const getOneBlog = async (req, res) => {
     }
     blogContent.clicks++
    await blogContent.save()
-    res.status(statusCodes.OK).json({ blogContent });
+
+   const numberOfLikes = blogContent.blogLikes.length;
+    res.status(statusCodes.OK).json({ blogContent,numberOfLikes });
   } catch (error) {
     res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Failed to retrieve the blog", error });
   }
