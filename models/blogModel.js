@@ -20,7 +20,11 @@ const blogSchema = new mongoose.Schema({
         type:[mongoose.Types.ObjectId],
         ref:"comment",
         default:[]
-    }]
+    }],
+    clicks: {
+        type:Number,
+        default:0
+    }
 
 },{timestamps:true})
 

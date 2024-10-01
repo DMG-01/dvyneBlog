@@ -23,7 +23,8 @@ const getOneBlog = async (req, res) => {
     if (!blogContent) {
       return res.status(statusCodes.NOT_FOUND).json({ msg: "No content found" });
     }
-
+    blogContent.clicks++
+   await blogContent.save()
     res.status(statusCodes.OK).json({ blogContent });
   } catch (error) {
     res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ msg: "Failed to retrieve the blog", error });
