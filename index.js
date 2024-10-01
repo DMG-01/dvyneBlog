@@ -6,6 +6,7 @@ const app = express()
 const blogsRoute = require("./routes/blog")
 const adminRoute = require("./routes/adminRoute")
 const authRoute = require("./routes/auth")
+const adminAuthenticate = require("./middleware/adminAuthentication")
 
 
 app.use(express.json())
@@ -15,7 +16,7 @@ app.get("/",(req,res)=> {
 })
 
 app.use("/api/v1/blog",blogsRoute)
-app.use("/api/v1/admin",adminRoute)
+app.use("/api/v1/admin",adminAuthenticate,adminRoute)
 app.use("/api/v1/auth",authRoute)
 
 const start = async (req,res)=> {
