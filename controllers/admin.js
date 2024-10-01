@@ -1,5 +1,6 @@
 const statusCodes = require("http-status-codes")
 const blog = require("../models/blogModel")
+const User = require("../models/users")
 
 const postABlog = async(req,res)=> {
    // res.send("a blog has been posted")
@@ -20,4 +21,14 @@ const deleteABlog = async(req,res) => {
     //res.send("deleted")
 }
 
-module.exports = {postABlog,updateABlog,deleteABlog}
+const getAllUsers = async(req,res)=> {
+   try{
+ const allUsers = await User.find()
+ const totalNumberOfUsers = allUsers.length
+ res.status(statusCodes.OK).json({allUsers,totalNumberOfUsers})
+   }catch(error){
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({msg:error})
+   }
+}
+
+module.exports = {postABlog,updateABlog,deleteABlog,getAllUsers}
