@@ -20,6 +20,11 @@ const commentSchema = new mongoose.Schema({
     Date: {
         type:Date,
         default:Date.now
+    },
+    likes: {
+        type:[mongoose.Types.ObjectId],
+        ref:"users",
+        default:[]
     }
 },
 {timestamps:true}

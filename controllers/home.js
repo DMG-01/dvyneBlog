@@ -154,4 +154,8 @@ req.body.User = objectUserId
  }
 }
 
-module.exports = { getAllBlogs, getOneBlog, likeABlog, unlikeABlog, commentOnABlog };
+const likeABlogComment = async(req,res)=> {
+  res.send("blog liked")
+}
+
+module.exports = { getAllBlogs, getOneBlog, likeABlog, unlikeABlog, commentOnABlog, likeABlogComment };
