@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog List</title>
+</head>
+<body>
+    <div id="blog-list"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function getBlogs() {
+            try {
+                const response = await axios.get('http://localhost:3000/api/v1/blog'); // Adjusted URL
+                const data = response.data;
+
+                const blogList = document.getElementById('blog-list');
+                blogList.innerHTML = '';
+
+                data.blogs.forEach(blog => {
+                    const blogElement = document.createElement('div');
+                    blogElement.innerHTML = `
+                        <h2>${blog.title}</h2>
+                        <p>${blog.content}</p>
+                        <button onclick="likeBlog('${blog._id}')">Like (${blog.numberOfLikes})</button>
+                        <button onclick="getSingleBlog('${blog._id}')">View Blog</button>
+                        <hr>
+                    `;
+                    blogList.appendChild(blogElement);
+                });
+            } catch (error) {
+                console.error('Error fetching blogs:', error);
+            }
+        }
+
+        getBlogs(); // Fetch all blogs when the page loads
+    </script>
+</body>
+</html>
